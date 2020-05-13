@@ -12,9 +12,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.CustomProperties;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 import com.microsoft.appcenter.distribute.Distribute;
+
+import java.security.SecureRandom;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
             new DistributeActivity(),
             new CrashesActivity(),
             new AnalyticsActivity(),
-            new PushActivity()
+            new PushActivity(),
+            new UserFragment(),
     };
 
     @Override
@@ -46,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
             // Otherwise use the hardcoded string value here
             AppCenter.start(getApplication(), "86639443-cee1-4175-9a47-b7eb1a7a29e4",
                     Analytics.class, Crashes.class, Distribute.class);
+            AppCenter.setCustomProperties(new CustomProperties()
+                .set("startTime", new Date())
+                .set("magicNumber", 42)
+                .set("randomNumber", new SecureRandom().nextInt()));
         }
 
 
@@ -93,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
                 return "Analytics";
             } else if (views[position] instanceof PushActivity) {
                 return "Push";
+            } else if (views[position] instanceof UserFragment) {
+                return "User";
             }
 
             return views[position].getClass().getSimpleName().trim().replace("Activity", "");
