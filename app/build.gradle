@@ -8,7 +8,7 @@ String version;
 if (versionDets.isCleanTag) {
     version = versionDets.lastTag;
 } else {
-    version = "${versionDets.lastTag}+${versionDets.commitDistance}#${versionDets.gitHash}"
+    version = "${versionDets.lastTag}-c${versionDets.commitDistance}-${versionDets.gitHash}"
 }
 
 logger.info("version = $version")
@@ -22,6 +22,7 @@ android {
         targetSdkVersion 29
         versionCode 2
         versionName version
+        setProperty("archivesBaseName", "appcenter-sample-$versionName")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // Obtain the value of APPCENTER_APP_SECRET environment variable from Build time.
         buildConfigField("String", "APPCENTER_APP_SECRET", "\"\"")
